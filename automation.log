@@ -1,0 +1,5 @@
+2025-08-10 22:33:07,810 - INFO - ====== WebDriver manager ======
+2025-08-10 22:33:08,696 - INFO - Get LATEST chromedriver version for google-chrome
+2025-08-10 22:33:08,713 - ERROR - 浏览器驱动初始化失败: Could not reach host. Are you offline?
+2025-08-10 23:13:26,800 - INFO - 浏览器驱动初始化成功
+2025-08-10 23:13:28,973 - INFO - 浏览器已关闭
