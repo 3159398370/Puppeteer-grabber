@@ -41,7 +41,10 @@ def search_task_by_number():
     options.add_argument('--profile-directory=Default')
 
     # 使用本地chromedriver.exe
-    chromedriver_path = os.path.join(os.getcwd(), 'chromedriver.exe')
+    # 获取脚本所在目录的上级目录（项目根目录）
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    chromedriver_path = os.path.join(project_root, 'chromedriver.exe')
     service = Service(chromedriver_path)
     service.log_path = os.devnull  # 禁用日志
 
@@ -485,6 +488,29 @@ def search_task_by_number():
             print("\n✅ 已成功进入任务详情页面！")
             print("📝 请手动点击页面上的'开始标注'按钮来开始标注任务。")
             print("💡 脚本将保持浏览器打开状态，您可以继续进行标注工作。")
+            
+            # 询问是否启动浮动控制面板
+            print("\n🎯 是否启动浮动控制面板？(y/n)")
+            print("浮动面板提供以下快捷键功能：")
+            print("  ← 左键: 跳过")
+            print("  → 右键: 选中")
+            print("  ↑ 上键: 提取")
+            print("  ↓ 下键: 上传")
+            print("  空格键: 提交")
+            
+            panel_choice = input("启动浮动面板? (y/n): ").strip().lower()
+            if panel_choice in ['y', 'yes', '是']:
+                try:
+                    from floating_control_panel import create_floating_panel
+                    print("\n🚀 启动浮动控制面板...")
+                    print("⚠️  面板将在新窗口中打开，请保持浏览器窗口活动状态")
+                    create_floating_panel(driver)
+                except ImportError:
+                    print("❌ 无法导入浮动控制面板模块，请确保floating_control_panel.py文件存在")
+                except Exception as e:
+                    print(f"❌ 启动浮动控制面板失败: {e}")
+            else:
+                print("跳过浮动面板启动")
 
         except TimeoutException:
             print("❌ 超时：未找到详情按钮")
@@ -505,11 +531,24 @@ def search_task_by_number():
     print("5 - 重新搜索任务")
     print("9 - 退出程序")
 
+    print("\n操作完成！输入 'h' 查看帮助菜单，输入 'q' 退出程序")
+    
     while True:
         try:
-            cmd = input("\n请输入数字(0-9): ").strip()
-            if cmd == '9':
+            cmd = input("\n> ").strip().lower()
+            if cmd == 'q':
                 break
+            elif cmd == 'h':
+                print("\n=== 控制面板 ===")
+                print("0 - 查看当前页面状态")
+                print("1 - 显示当前URL")
+                print("2 - 显示页面标题")
+                print("3 - 刷新页面")
+                print("4 - 返回上一页")
+                print("5 - 重新搜索任务")
+                print("h - 显示此帮助菜单")
+                print("q - 退出程序")
+                print("==================")
             elif cmd == '0':
                 print(f"\n当前页面状态:")
                 print(f"URL: {driver.current_url}")
@@ -550,7 +589,7 @@ def search_task_by_number():
             elif cmd == '':
                 continue
             else:
-                print("❌ 无效输入，请输入0-9的数字")
+                print("❌ 无效输入，输入 'h' 查看帮助菜单")
         except KeyboardInterrupt:
             print("\n收到中断信号，退出程序")
             break

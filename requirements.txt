@@ -4,5 +4,6 @@ Pillow==10.1.0
 opencv-python==4.8.1.78
 numpy==1.24.3
 python-dotenv==1.0.0
+keyboard==0.13.5
 
 lxml==4.9.3
