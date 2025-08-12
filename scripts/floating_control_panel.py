@@ -13,6 +13,10 @@
 
 import time
 import threading
+import os
+import requests
+from urllib.parse import urlparse
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -52,6 +56,9 @@ class FloatingControlPanel:
             'submit': "//button[contains(@class, 'ivu-btn') and contains(., '提交')]"
         }
         
+        # 图片下载XPath
+        self.image_xpath = "//div[@class='safe-image image-item']//img[@class='img']"
+        
         # 创建浮动窗口
         self.create_floating_window()
         
@@ -82,7 +89,7 @@ class FloatingControlPanel:
             ("← 左键", "选中", "left"),
             ("→ 右键", "跳过", "right"),
             ("↑ 上键", "上传", "up"),
-            ("↓ 下键", "提取", "down"),
+            ("↓ 下键", "下载图片", "down"),
             ("空格键", "提交", "space")
         ]
         
@@ -114,7 +121,7 @@ class FloatingControlPanel:
         
         ttk.Button(btn_row1, text="跳过", command=lambda: self.manual_action('skip', '跳过')).grid(row=0, column=0, padx=2)
         ttk.Button(btn_row1, text="选中", command=lambda: self.manual_action('select', '选中')).grid(row=0, column=1, padx=2)
-        ttk.Button(btn_row1, text="提取", command=lambda: self.manual_action('extract', '提取')).grid(row=0, column=2, padx=2)
+        ttk.Button(btn_row1, text="下载图片", command=lambda: self.download_current_image()).grid(row=0, column=2, padx=2)
         
         # 第二行按钮
         btn_row2 = ttk.Frame(action_frame)
@@ -122,6 +129,7 @@ class FloatingControlPanel:
         
         ttk.Button(btn_row2, text="上传", command=lambda: self.manual_action('upload', '上传')).grid(row=0, column=0, padx=2)
         ttk.Button(btn_row2, text="提交", command=lambda: self.manual_action('submit', '提交')).grid(row=0, column=1, padx=2)
+        ttk.Button(btn_row2, text="提取", command=lambda: self.manual_action('extract', '提取')).grid(row=0, column=2, padx=2)
         
         # 控制按钮
         control_frame = ttk.Frame(main_frame)
@@ -144,6 +152,139 @@ class FloatingControlPanel:
         """更新状态显示"""
         if self.status_label:
             self.status_label.config(text=message, foreground=color)
+    
+    def extract_filename_from_url(self, url):
+        """从URL中提取原始文件名"""
+        try:
+            parsed_url = urlparse(url)
+            filename = os.path.basename(parsed_url.path)
+            return filename if filename else 'image.jpg'
+        except:
+            return 'image.jpg'
+    
+    def get_next_folder_number(self, base_dir):
+        """获取下一个可用的文件夹编号"""
+        if not os.path.exists(base_dir):
+            return 1
+        
+        existing_folders = []
+        for item in os.listdir(base_dir):
+            item_path = os.path.join(base_dir, item)
+            if os.path.isdir(item_path) and item.isdigit():
+                existing_folders.append(int(item))
+        
+        if not existing_folders:
+            return 1
+        
+        return max(existing_folders) + 1
+    
+    def get_current_folder_number(self, base_dir):
+        """获取当前最新的文件夹编号，如果没有则返回1"""
+        if not os.path.exists(base_dir):
+            return 1
+        
+        existing_folders = []
+        for item in os.listdir(base_dir):
+            item_path = os.path.join(base_dir, item)
+            if os.path.isdir(item_path) and item.isdigit():
+                existing_folders.append(int(item))
+        
+        if not existing_folders:
+            return 1
+        
+        return max(existing_folders)
+    
+    def download_current_image(self):
+        """下载当前页面的图片"""
+        try:
+            self.update_status("🔍 查找图片...", "blue")
+            print("\n🔍 开始下载当前图片...")
+            
+            # 等待页面加载
+            WebDriverWait(self.driver, 5).until(
+                lambda d: d.execute_script("return document.readyState") == "complete"
+            )
+            
+            # 查找图片元素
+            img_element = WebDriverWait(self.driver, 5).until(
+                EC.presence_of_element_located((By.XPATH, self.image_xpath))
+            )
+            
+            # 获取图片URL
+            img_url = img_element.get_attribute('src')
+            
+            if not img_url or img_url.startswith('data:'):
+                self.update_status("❌ 无效图片URL", "red")
+                print("❌ 无效的图片URL")
+                return
+            
+            print(f"📷 图片URL: {img_url}")
+            
+            # 创建下载目录结构
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            project_root = os.path.dirname(script_dir)
+            
+            # 获取当前日期 (月.日格式)
+            now = datetime.now()
+            date_folder = f"{now.month}.{now.day}"
+            
+            # 构建基础路径: downloads/downloaded_images/月.日/
+            base_download_dir = os.path.join(project_root, 'downloads', 'downloaded_images', date_folder)
+            
+            # 获取当前最新的文件夹编号（用于本次下载）
+            current_folder_number = self.get_current_folder_number(base_download_dir)
+            
+            # 当前下载目录: downloads/downloaded_images/月.日/编号/
+            current_download_dir = os.path.join(base_download_dir, str(current_folder_number))
+            
+            # 确保当前下载目录存在
+            if not os.path.exists(current_download_dir):
+                os.makedirs(current_download_dir)
+            
+            # 提取文件名
+            filename = self.extract_filename_from_url(img_url)
+            filepath = os.path.join(current_download_dir, filename)
+            
+            self.update_status(f"⬇️ 下载中...", "blue")
+            print(f"⬇️ 下载图片: {filename}")
+            print(f"📁 保存路径: {current_download_dir}")
+            
+            # 下载图片
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+            
+            # 创建session并完全禁用代理
+            session = requests.Session()
+            session.proxies = {}
+            session.trust_env = False
+            
+            response = session.get(img_url, headers=headers, timeout=30, proxies={})
+            response.raise_for_status()
+            
+            # 保存图片
+            with open(filepath, 'wb') as f:
+                f.write(response.content)
+            
+            # 下载成功后，为下次下载准备新文件夹
+            next_folder_number = current_folder_number + 1
+            next_download_dir = os.path.join(base_download_dir, str(next_folder_number))
+            if not os.path.exists(next_download_dir):
+                os.makedirs(next_download_dir)
+                print(f"📁 已为下次下载创建新文件夹: {next_folder_number}")
+            
+            self.update_status(f"✅ 图片已保存", "green")
+            print(f"✅ 图片下载成功: {filepath}")
+            print(f"📁 完整路径: downloads/downloaded_images/{date_folder}/{current_folder_number}/{filename}")
+            
+        except TimeoutException:
+            self.update_status("❌ 未找到图片", "red")
+            print("❌ 未找到指定的图片元素")
+            print("💡 下载失败，将继续使用当前文件夹")
+        except Exception as e:
+            self.update_status("❌ 下载失败", "red")
+            print(f"❌ 下载图片失败: {e}")
+            print("💡 下载失败，将继续使用当前文件夹")
     
     def click_button_by_xpath(self, xpath, button_name):
         """根据XPath点击按钮"""
@@ -333,7 +474,7 @@ class FloatingControlPanel:
             'left': ('select', '选中'),
             'right': ('skip', '跳过'),
             'up': ('upload', '上传'),
-            'down': ('extract', '提取'),
+            'down': ('download', '下载图片'),
             'space': ('submit', '提交')
         }
         
@@ -348,8 +489,15 @@ class FloatingControlPanel:
                 # 连续点击两次，执行操作
                 print(f"\n🎯 检测到连续点击: {event.name} -> 执行{action_name}操作")
                 self.update_status(f"🎯 执行{action_name}...", "blue")
-                xpath = self.button_xpaths[action_key]
-                threading.Thread(target=self.click_button_by_xpath, args=(xpath, action_name), daemon=True).start()
+                
+                if action_key == 'download':
+                    # 下载图片操作
+                    threading.Thread(target=self.download_current_image, daemon=True).start()
+                else:
+                    # 其他按钮操作
+                    xpath = self.button_xpaths[action_key]
+                    threading.Thread(target=self.click_button_by_xpath, args=(xpath, action_name), daemon=True).start()
+                
                 # 重置时间，避免三次点击
                 self.last_key_time[event.name] = 0
             else:
@@ -380,7 +528,7 @@ class FloatingControlPanel:
             print("  ← 左键: 选中（需连续点击两次）")
             print("  → 右键: 跳过（需连续点击两次）")
             print("  ↑ 上键: 上传（需连续点击两次）")
-            print("  ↓ 下键: 提取（需连续点击两次）")
+            print("  ↓ 下键: 下载图片（需连续点击两次）")
             print("  空格键: 提交（需连续点击两次）")
             print("\n⚠️  请确保浏览器窗口处于活动状态以接收按键事件")
             print("💡 所有按键都需要在1秒内连续点击两次才会执行，避免误触")
