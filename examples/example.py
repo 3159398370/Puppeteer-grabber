@@ -6,10 +6,17 @@
 """
 
 import os
+import sys
 import time
-from main import AutomationTool
-from task_executor import TaskExecutor
-from config import Config, XPathSelectors
+
+# 添加项目根目录到Python路径
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+from src.core.main import AutomationTool
+from src.core.task_executor import TaskExecutor
+from src.core.config import Config, XPathSelectors
 
 def example_basic_automation():
     """示例1: 基础自动化操作"""

@@ -10,6 +10,31 @@
 - **本地chromedriver.exe**：已包含在项目中，无需额外下载
 - **稳定网络连接**：用于下载依赖和API调用
 
+## 项目结构
+
+项目已重新组织为模块化结构：
+
+```
+Puppeteer-grabber/
+├── src/                      # 源代码目录
+│   ├── core/                # 核心功能模块
+│   │   ├── main.py         # 主要的自动化工具类
+│   │   ├── task_executor.py # 任务执行器
+│   │   └── config.py       # 配置管理模块
+│   └── utils/              # 工具模块
+│       └── cli.py          # 命令行界面工具
+├── scripts/                 # 脚本文件
+│   ├── task_search.py      # 任务搜索脚本
+│   ├── check_deps.py       # 依赖检查脚本
+│   └── ...                 # 其他脚本
+├── tests/                   # 测试文件
+├── examples/                # 示例文件
+├── config/                  # 配置文件
+├── data/                    # 数据文件
+├── run.py                   # 快速启动脚本
+└── requirements.txt         # 依赖列表
+```
+
 ### 支持的操作系统
 - Windows 10/11
 - macOS 10.14+
@@ -37,6 +62,7 @@
    - 检查Chrome浏览器
    - 创建配置文件
    - 引导API配置
+   - 启动重新组织后的模块化项目
 
 ### 方法2：手动安装
 
@@ -47,14 +73,14 @@
 
 2. **配置环境变量**
    ```bash
-   cp .env.example .env
+   cp config/.env.example .env
    ```
    
    编辑 `.env` 文件，填入您的API配置。
 
 3. **运行基础测试**
    ```bash
-   python test_basic.py
+   python tests/test_basic.py
    ```
 
 ## 详细安装步骤
@@ -141,7 +167,7 @@ pip install -r requirements.txt
 #### 配置环境变量
 1. 复制配置文件：
    ```bash
-   cp .env.example .env
+   cp config/.env.example .env
    ```
 
 2. 编辑 `.env` 文件：
@@ -180,7 +206,7 @@ set HTTPS_PROXY=http://your-proxy:port
 
 3. 配置驱动路径：
    ```python
-   # 在main.py中修改
+   # 在src/core/main.py中修改
    service = Service('/path/to/your/chromedriver')
    ```
 
@@ -209,7 +235,7 @@ HTTPS_PROXY=http://your-proxy:port
 
 ### 运行测试
 ```bash
-python test_basic.py
+python tests/test_basic.py
 ```
 
 期望输出：
@@ -219,14 +245,18 @@ python test_basic.py
 
 ### 启动工具
 ```bash
-# 方法1：快速启动
+# 方法1：快速启动（推荐）
 python run.py
 
-# 方法2：命令行界面
-python cli.py
+# 方法2：直接启动命令行界面
+python src/utils/cli.py
 
-# 方法3：查看示例
-python example.py
+# 方法3：查看使用示例
+python examples/example.py
+
+# 方法4：运行特定脚本
+python scripts/check_deps.py
+python scripts/check_browser_status.py
 ```
 
 ## 常见问题
@@ -341,15 +371,30 @@ rm -rf !(*.env*|downloads)
 2. 下载与您的Chrome浏览器版本匹配的chromedriver
 3. 替换项目根目录中的 `chromedriver.exe` 文件
 
+## 模块导入说明
+
+由于项目已重新组织，导入模块时需要使用新的路径：
+
+```python
+# 导入核心模块
+from src.core.main import AutomationTool
+from src.core.task_executor import TaskExecutor
+from src.core.config import Config
+
+# 导入工具模块
+from src.utils.cli import CLI
+```
+
 ## 技术支持
 
 如果遇到安装问题：
 
-1. **查看日志**：检查 `automation.log` 文件
-2. **运行诊断**：执行 `python test_basic.py`
+1. **查看日志**：检查 `data/automation.log` 文件
+2. **运行诊断**：执行 `python tests/test_basic.py`
 3. **检查版本**：确认Python和依赖包版本
 4. **Chrome驱动问题**：确认chromedriver.exe存在且与Chrome版本匹配
-5. **提交Issue**：在项目仓库提交详细的错误信息
+5. **检查项目结构**：确认文件已正确组织到相应目录
+6. **提交Issue**：在项目仓库提交详细的错误信息
 
 ---
 

@@ -10,33 +10,38 @@ import sys
 import time
 from pathlib import Path
 
+# 添加项目根目录到Python路径
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
 def test_imports():
     """测试模块导入"""
     print("=== 测试模块导入 ===")
     
     try:
-        from main import AutomationTool
+        from src.core.main import AutomationTool
         print("✓ main.py 导入成功")
     except Exception as e:
         print(f"✗ main.py 导入失败: {e}")
         return False
     
     try:
-        from task_executor import TaskExecutor
+        from src.core.task_executor import TaskExecutor
         print("✓ task_executor.py 导入成功")
     except Exception as e:
         print(f"✗ task_executor.py 导入失败: {e}")
         return False
     
     try:
-        from config import Config, XPathSelectors, BACKGROUND_OPTIONS
+        from src.core.config import Config, XPathSelectors, BACKGROUND_OPTIONS
         print("✓ config.py 导入成功")
     except Exception as e:
         print(f"✗ config.py 导入失败: {e}")
         return False
     
     try:
-        import cli
+        from src.utils import cli
         print("✓ cli.py 导入成功")
     except Exception as e:
         print(f"✗ cli.py 导入失败: {e}")

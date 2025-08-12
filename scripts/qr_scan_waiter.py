@@ -32,7 +32,10 @@ def wait_for_qr_scan_and_enter_main():
         options.add_experimental_option('useAutomationExtension', False)
         
         # 使用本地chromedriver.exe
-        chromedriver_path = os.path.join(os.getcwd(), 'chromedriver.exe')
+        # 获取脚本所在目录的上级目录（项目根目录）
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(script_dir)
+        chromedriver_path = os.path.join(project_root, 'chromedriver.exe')
         service = Service(chromedriver_path)
         service.log_path = os.devnull  # 禁用日志
         

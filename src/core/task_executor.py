@@ -9,8 +9,8 @@ import os
 import time
 import json
 from typing import List, Dict, Optional
-from main import AutomationTool
-from config import Config, XPathSelectors, TaskConfig, BACKGROUND_OPTIONS
+from .main import AutomationTool
+from .config import Config, XPathSelectors, TaskConfig, BACKGROUND_OPTIONS
 import logging
 
 class TaskExecutor:

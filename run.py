@@ -115,14 +115,14 @@ def show_startup_menu():
 def run_cli():
     """启动命令行界面"""
     try:
-        subprocess.run([PYTHON_PATH, "cli.py"])
+        subprocess.run([PYTHON_PATH, "src/utils/cli.py"])
     except Exception as e:
         print(f"启动CLI失败: {e}")
 
 def run_examples():
     """运行示例"""
     try:
-        subprocess.run([PYTHON_PATH, "example.py"])
+        subprocess.run([PYTHON_PATH, "examples/example.py"])
     except Exception as e:
         print(f"运行示例失败: {e}")
 
