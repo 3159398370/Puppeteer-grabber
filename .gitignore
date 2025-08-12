@@ -27,4 +27,8 @@ downloads/
 data/*.html
 current_page_source.html
 
+# 项目文档文件（本地使用，不需要版本控制）
+文件组织说明.md
+项目结构更新完成.md
+
 
