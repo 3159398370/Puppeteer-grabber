@@ -22,6 +22,17 @@ import webbrowser  # 用于打开浏览器
 import subprocess  # 用于执行系统命令
 from urllib.parse import urlparse
 from datetime import datetime
+
+# 获取正确的项目根目录（兼容打包后的exe文件）
+def get_project_root():
+    """获取项目根目录，兼容开发环境和打包后的exe文件"""
+    if getattr(sys, 'frozen', False):
+        # 如果是打包后的exe文件
+        return os.path.dirname(sys.executable)
+    else:
+        # 如果是开发环境
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        return os.path.dirname(script_dir)
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -29,8 +40,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 # 添加项目根目录到Python路径
-script_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(script_dir)
+project_root = get_project_root()
 sys.path.insert(0, project_root)
 
 # 导入腾讯元宝自动化客户端
@@ -56,11 +66,12 @@ import tkinter as tk
 from tkinter import ttk
 
 class FloatingControlPanel:
-    def __init__(self, driver):
+    def __init__(self, driver=None):
         self.driver = driver
         self.running = False
         self.root = None
         self.status_label = None
+        self.standalone_mode = driver is None  # 独立模式标志
         
         # 腾讯元宝自动化客户端
         self.yuanbao_automation = None
@@ -244,7 +255,7 @@ class FloatingControlPanel:
             return 'image.jpg'
     
     def get_next_folder_number(self, base_dir):
-        """获取下一个可用的文件夹编号"""
+        """获取下一个可用的文件夹编号（自动补位）"""
         if not os.path.exists(base_dir):
             return 1
         
@@ -257,7 +268,106 @@ class FloatingControlPanel:
         if not existing_folders:
             return 1
         
+        existing_folders.sort()
+        
+        # 检测数字跳跃（大于5的跳跃视为异常）
+        if len(existing_folders) >= 2:
+            # 检查相邻文件夹之间是否有大幅跳跃
+            for i in range(len(existing_folders) - 1):
+                current = existing_folders[i]
+                next_folder = existing_folders[i + 1]
+                jump_size = next_folder - current
+                
+                if jump_size > 5:  # 检测到大幅跳跃
+                    result = self._show_jump_confirmation_dialog(current, next_folder)
+                    if result:  # 用户选择确定
+                        return max(existing_folders) + 1
+                    # 用户选择取消，继续正常的自动补位逻辑
+                    break
+        
+        # 自动补位逻辑：检查是否需要重新排列
+        needs_reorganize = False
+        for i, folder_num in enumerate(existing_folders, 1):
+            if folder_num != i:
+                needs_reorganize = True
+                break
+        
+        if needs_reorganize:
+            # 需要重新排列文件夹
+            self._reorganize_folders(base_dir, existing_folders)
+            # 重新获取排列后的文件夹列表
+            reorganized_folders = []
+            for item in os.listdir(base_dir):
+                item_path = os.path.join(base_dir, item)
+                if os.path.isdir(item_path) and item.isdigit():
+                    reorganized_folders.append(int(item))
+            reorganized_folders.sort()
+            return max(reorganized_folders) + 1 if reorganized_folders else 1
+        
+        # 如果没有缺失，返回下一个编号
         return max(existing_folders) + 1
+    
+    def _show_jump_confirmation_dialog(self, second_max, max_folder):
+        """显示数字跳跃确认对话框"""
+        from tkinter import messagebox
+        import tkinter as tk
+        
+        # 创建一个临时的根窗口来显示对话框
+        temp_root = tk.Tk()
+        temp_root.withdraw()  # 隐藏主窗口
+        temp_root.lift()  # 提升窗口层级
+        temp_root.attributes('-topmost', True)  # 置顶显示
+        
+        print(f"⚠️  检测到文件夹编号从 {second_max} 跳跃到 {max_folder}")
+        print(f"📋 即将弹出确认对话框...")
+        
+        message = f"检测到文件夹编号从 {second_max} 跳跃到 {max_folder}\n\n" + \
+                 f"选择'确定'：直接创建下一个文件夹\n" + \
+                 f"选择'取消'：自动补位重新排列文件夹"
+        
+        result = messagebox.askokcancel(
+            "文件夹编号跳跃检测",
+            message,
+            icon='warning',
+            parent=temp_root
+        )
+        
+        temp_root.destroy()  # 销毁临时窗口
+        
+        if result:
+            print(f"✅ 用户选择确定，将直接创建文件夹 {max_folder + 1}")
+        else:
+            print(f"❌ 用户选择取消，将进行自动补位")
+        
+        return result
+    
+    def _reorganize_folders(self, base_dir, existing_folders):
+        """重新组织文件夹编号，实现自动补位"""
+        print("🔄 检测到文件夹编号不连续，正在自动补位...")
+        existing_folders.sort()
+        
+        # 创建临时映射
+        temp_mapping = {}
+        for i, old_num in enumerate(existing_folders, 1):
+            if old_num != i:
+                old_path = os.path.join(base_dir, str(old_num))
+                temp_path = os.path.join(base_dir, f"temp_{old_num}")
+                temp_mapping[old_num] = (old_path, temp_path, i)
+        
+        # 先重命名为临时名称
+        for old_num, (old_path, temp_path, new_num) in temp_mapping.items():
+            if os.path.exists(old_path):
+                os.rename(old_path, temp_path)
+                print(f"📁 临时重命名: {old_num} -> temp_{old_num}")
+        
+        # 再重命名为最终名称
+        for old_num, (old_path, temp_path, new_num) in temp_mapping.items():
+            if os.path.exists(temp_path):
+                new_path = os.path.join(base_dir, str(new_num))
+                os.rename(temp_path, new_path)
+                print(f"📁 最终重命名: temp_{old_num} -> {new_num}")
+        
+        print("✅ 文件夹自动补位完成")
     
     def get_current_folder_number(self, base_dir):
         """获取当前最新的文件夹编号"""
@@ -279,6 +389,11 @@ class FloatingControlPanel:
     
     def extract_current_data(self):
         """提取当前页面的数据（图片、标注内容、原图大小）"""
+        if self.standalone_mode:
+            self.update_status("⚠️ 独立模式下无法提取", "orange")
+            print("⚠️ 独立模式下无法提取页面数据，请连接浏览器驱动")
+            return
+            
         try:
             self.update_status("🔍 提取数据中...", "blue")
             print("\n🔍 开始提取当前页面数据...")
@@ -310,8 +425,7 @@ class FloatingControlPanel:
                 return
             
             # 创建下载目录结构
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(script_dir)
+            project_root = get_project_root()
             
             # 获取当前日期 (月.日格式)
             now = datetime.now()
@@ -456,8 +570,7 @@ class FloatingControlPanel:
     def update_global_api_tasks(self, task_data):
         """更新全局API任务文件"""
         try:
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(script_dir)
+            project_root = get_project_root()
             data_dir = os.path.join(project_root, 'data')
             
             # 确保data目录存在
@@ -578,8 +691,7 @@ class FloatingControlPanel:
         """获取最新的任务数据"""
         try:
             # 从全局API任务文件获取最新任务
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(script_dir)
+            project_root = get_project_root()
             api_tasks_file = os.path.join(project_root, 'data', 'api_tasks.json')
             
             if os.path.exists(api_tasks_file):
@@ -621,8 +733,7 @@ class FloatingControlPanel:
     def get_latest_annotation_from_data_file(self):
         """从最新的data文件中读取标注内容（优先读取JSON文件）"""
         try:
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(script_dir)
+            project_root = get_project_root()
             
             # 获取当前日期 (月.日格式)
             now = datetime.now()
@@ -634,7 +745,9 @@ class FloatingControlPanel:
             print(f"🔍 查找data文件路径: {base_download_dir}")
             
             if not os.path.exists(base_download_dir):
-                print(f"⚠️  日期文件夹不存在: {base_download_dir}")
+                print(f"📁 日期文件夹不存在，正在创建: {base_download_dir}")
+                os.makedirs(base_download_dir, exist_ok=True)
+                print(f"✅ 已创建日期文件夹: {base_download_dir}")
                 return None
             
             # 获取所有数字文件夹
@@ -711,8 +824,7 @@ class FloatingControlPanel:
     def is_image_already_extracted(self, img_url):
         """检查图片是否已经提取过"""
         try:
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(script_dir)
+            project_root = get_project_root()
             
             # 获取当前日期 (月.日格式)
             now = datetime.now()
@@ -770,8 +882,7 @@ class FloatingControlPanel:
                 return
             
             # 检查图片文件是否存在
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(script_dir)
+            project_root = get_project_root()
             full_image_path = os.path.join(project_root, image_path)
             
             if not os.path.exists(full_image_path):
@@ -840,8 +951,7 @@ class FloatingControlPanel:
                 return
             
             # 检查图片文件是否存在
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(script_dir)
+            project_root = get_project_root()
             full_image_path = os.path.join(project_root, image_path)
             
             if not os.path.exists(full_image_path):
@@ -995,8 +1105,7 @@ class FloatingControlPanel:
                 return
             
             # 创建处理结果目录
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(script_dir)
+            project_root = get_project_root()
             
             # 获取当前日期 (月.日格式)
             now = datetime.now()
@@ -1041,8 +1150,7 @@ class FloatingControlPanel:
             self.update_status("🗑️ 准备删除...", "blue")
             print("\n🗑️ 准备删除当前任务文件夹...")
             
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(script_dir)
+            project_root = get_project_root()
             
             # 获取当前日期 (月.日格式)
             now = datetime.now()
@@ -1216,6 +1324,11 @@ class FloatingControlPanel:
     
     def click_button_by_xpath(self, xpath, button_name):
         """根据XPath点击按钮"""
+        if self.standalone_mode:
+            self.update_status(f"⚠️ 独立模式下无法{button_name}", "orange")
+            print(f"⚠️ 独立模式下无法{button_name}，请连接浏览器驱动")
+            return False
+            
         try:
             # 先尝试查找按钮
             button = WebDriverWait(self.driver, 2).until(
@@ -1310,7 +1423,8 @@ class FloatingControlPanel:
                 from datetime import datetime
                 
                 # 创建保存目录
-                save_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')
+                project_root = get_project_root()
+                save_dir = os.path.join(project_root, 'data')
                 os.makedirs(save_dir, exist_ok=True)
                 
                 # 生成文件名（包含时间戳）
@@ -1469,6 +1583,10 @@ class FloatingControlPanel:
     def start_page_monitor(self):
         """启动页面监听线程，自动更新指令"""
         def monitor_page():
+            if self.standalone_mode:
+                print("💡 独立模式下页面监听功能已禁用")
+                return
+                
             last_url = ""
             last_image_src = ""
             while self.running:
@@ -1666,6 +1784,37 @@ def create_floating_panel(driver):
             except:
                 pass  # 忽略关闭时的错误
 
+def create_standalone_panel():
+    """创建独立运行的浮动控制面板（不依赖浏览器驱动）"""
+    panel = None
+    try:
+        print("🚀 启动独立浮动控制面板...")
+        panel = FloatingControlPanel(driver=None)
+        print("✅ 独立浮动控制面板初始化成功")
+        print("💡 独立模式下部分功能受限，如需完整功能请配合浏览器驱动使用")
+        panel.run()
+    except KeyboardInterrupt:
+        print("\n用户中断，关闭面板")
+        if panel:
+            panel.close_panel()
+    except Exception as e:
+        print(f"\n❌ 面板运行出错: {e}")
+        print(f"错误详情: {type(e).__name__}: {str(e)}")
+        if panel:
+            try:
+                panel.close_panel()
+            except:
+                pass  # 忽略关闭时的错误
+
 if __name__ == "__main__":
-    print("⚠️  此脚本需要与现有的浏览器驱动配合使用")
-    print("请在task_search.py中调用create_floating_panel(driver)函数")
+    import argparse
+    parser = argparse.ArgumentParser(description='浮动控制面板')
+    parser.add_argument('--standalone', action='store_true', help='独立模式启动')
+    args = parser.parse_args()
+    
+    if args.standalone:
+        create_standalone_panel()
+    else:
+        print("⚠️  此脚本需要与现有的浏览器驱动配合使用")
+        print("请在task_search.py中调用create_floating_panel(driver)函数")
+        print("或使用 --standalone 参数独立启动: python floating_control_panel.py --standalone")

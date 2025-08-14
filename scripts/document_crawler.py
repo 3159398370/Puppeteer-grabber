@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import os
+import sys
 import time
 import logging
 from urllib.parse import urlparse, parse_qs
@@ -12,6 +13,17 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, WebDriverException
+
+
+def get_project_root():
+    """获取项目根目录，兼容开发环境和打包后的exe文件"""
+    if getattr(sys, 'frozen', False):
+        # 如果是打包后的exe文件
+        return os.path.dirname(sys.executable)
+    else:
+        # 如果是开发环境
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        return os.path.dirname(script_dir)
 
 # 配置日志
 logging.basicConfig(
@@ -419,7 +431,8 @@ def main():
     url = "https://docs.qq.com/aio/p/scxmsn78nzsuj64?p=unUU8C3HBocfQSOGAh2BYuC"
     
     # 输出目录
-    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'downloads')
+    project_root = get_project_root()
+    output_dir = os.path.join(project_root, 'downloads')
     
     try:
         logger.info("开始爬取腾讯文档")

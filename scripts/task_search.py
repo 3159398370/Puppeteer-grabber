@@ -18,6 +18,46 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
 
+def get_project_root():
+    """获取项目根目录，兼容开发环境和打包后的exe文件"""
+    if getattr(sys, 'frozen', False):
+        # 如果是打包后的exe文件
+        return os.path.dirname(sys.executable)
+    else:
+        # 如果是开发环境
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        return os.path.dirname(script_dir)
+
+
+def ask_for_floating_panel(driver):
+    """询问是否启动浮动控制面板"""
+    print("\n🎯 是否启动浮动控制面板？(y/n)")
+    print("浮动面板提供以下快捷键功能：")
+    print("  ← 左键: 调用API")
+    print("  → 右键: 跳过")
+    print("  ↑ 上键: 上传")
+    print("  ↓ 下键: 提取")
+    print("  空格键: 提交")
+    
+    panel_choice = input("启动浮动面板? (y/n): ").strip().lower()
+    if panel_choice in ['y', 'yes', '是']:
+        try:
+            # 尝试不同的导入路径以适应打包环境
+            try:
+                from floating_control_panel import create_floating_panel
+            except ImportError:
+                from scripts.floating_control_panel import create_floating_panel
+            print("\n🚀 启动浮动控制面板...")
+            print("⚠️  面板将在新窗口中打开，请保持浏览器窗口活动状态")
+            create_floating_panel(driver)
+        except ImportError:
+            print("❌ 无法导入浮动控制面板模块，请确保floating_control_panel.py文件存在")
+        except Exception as e:
+            print(f"❌ 启动浮动控制面板失败: {e}")
+    else:
+        print("跳过浮动面板启动")
+
+
 def search_task_by_number():
     """在企鹅标注平台我的任务页面输入任务编号并查询"""
     driver = None
@@ -44,8 +84,7 @@ def search_task_by_number():
     options.add_experimental_option('useAutomationExtension', False)
 
     # 使用固定的用户数据目录以保持登录状态
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(script_dir)
+    project_root = get_project_root()
     user_data_dir = os.path.join(project_root, 'chrome_user_data')
     
     # 确保用户数据目录存在
@@ -65,8 +104,7 @@ def search_task_by_number():
         chromedriver_path = os.path.join(application_path, 'chromedriver.exe')
     else:
         # 如果是开发环境
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        project_root = os.path.dirname(script_dir)
+        project_root = get_project_root()
         chromedriver_path = os.path.join(project_root, 'chromedriver.exe')
     service = Service(chromedriver_path)
     service.log_path = os.devnull  # 禁用日志
@@ -542,49 +580,26 @@ def search_task_by_number():
             
             if not click_success:
                 print("❌ 所有点击方法都失败了")
-                return
-
-            # 等待详情页面加载
-            time.sleep(3)
-
-            # 检查是否成功跳转到详情页面
-            details_url = driver.current_url
-            details_title = driver.title
-
-            print("\n✅ 成功进入任务详情页面！")
-            print(f"详情页面URL: {details_url}")
-            print(f"详情页面标题: {details_title}")
-
-            print("\n✅ 已成功进入任务详情页面！")
-            print("📝 请手动点击页面上的'开始标注'按钮来开始标注任务。")
-            print("💡 脚本将保持浏览器打开状态，您可以继续进行标注工作。")
-            
-            # 询问是否启动浮动控制面板
-            print("\n🎯 是否启动浮动控制面板？(y/n)")
-            print("浮动面板提供以下快捷键功能：")
-            print("  ← 左键: 调用API")
-            print("  → 右键: 跳过")
-            print("  ↑ 上键: 上传")
-            print("  ↓ 下键: 提取")
-            print("  空格键: 提交")
-            
-            panel_choice = input("启动浮动面板? (y/n): ").strip().lower()
-            if panel_choice in ['y', 'yes', '是']:
-                try:
-                    # 尝试不同的导入路径以适应打包环境
-                    try:
-                        from floating_control_panel import create_floating_panel
-                    except ImportError:
-                        from scripts.floating_control_panel import create_floating_panel
-                    print("\n🚀 启动浮动控制面板...")
-                    print("⚠️  面板将在新窗口中打开，请保持浏览器窗口活动状态")
-                    create_floating_panel(driver)
-                except ImportError:
-                    print("❌ 无法导入浮动控制面板模块，请确保floating_control_panel.py文件存在")
-                except Exception as e:
-                    print(f"❌ 启动浮动控制面板失败: {e}")
+                print("⚠️  无法自动点击详情按钮，请手动点击进入任务详情页面")
+                # 不直接return，而是跳转到浮动控制面板询问
             else:
-                print("跳过浮动面板启动")
+                # 等待详情页面加载
+                time.sleep(3)
+
+                # 检查是否成功跳转到详情页面
+                details_url = driver.current_url
+                details_title = driver.title
+
+                print("\n✅ 成功进入任务详情页面！")
+                print(f"详情页面URL: {details_url}")
+                print(f"详情页面标题: {details_title}")
+
+                print("\n✅ 已成功进入任务详情页面！")
+                print("📝 请手动点击页面上的'开始标注'按钮来开始标注任务。")
+                print("💡 脚本将保持浏览器打开状态，您可以继续进行标注工作。")
+            
+            # 无论是否成功点击详情按钮，都询问是否启动浮动控制面板
+            ask_for_floating_panel(driver)
 
         except TimeoutException:
             print("❌ 超时：未找到详情按钮")

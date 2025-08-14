@@ -32,4 +32,8 @@ current_page_source.html
 文件组织说明.md
 项目结构更新完成.md
 
+# 打包生成的文件夹
+dist/
+build/
+
 
