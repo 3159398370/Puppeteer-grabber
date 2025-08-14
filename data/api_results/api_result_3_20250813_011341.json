@@ -1,0 +1,59 @@
+{
+  "task_data": {
+    "timestamp": "2025-08-13 01:10:14",
+    "task_id": "3",
+    "image": {
+      "filename": "3b4a05695d9e5c7b50bc4c803fd88e24_daa34502edcf32ea977715209b31f5f3.jpeg",
+      "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/3b4a05695d9e5c7b50bc4c803fd88e24_daa34502edcf32ea977715209b31f5f3.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755018613%3B1755020773%26q-key-time%3D1755018613%3B1755020773%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3De47f7b5e8716bccf5007fd74da8c5801de69bdb2",
+      "local_path": "downloads/downloaded_images/8.13/3/3b4a05695d9e5c7b50bc4c803fd88e24_daa34502edcf32ea977715209b31f5f3.jpeg",
+      "original_size": "1080X1080"
+    },
+    "annotation": {
+      "instruction": "把前景中的乐手和背景中的鼓手都删掉",
+      "type": "image_editing"
+    },
+    "status": "extracted",
+    "api_ready": true
+  },
+  "api_result": {
+    "api_response": {
+      "id": "e51fb2ea03830a7252fc025bb0881ec6",
+      "created": 1755018821,
+      "choices": [
+        {
+          "finish_reason": "sensitive",
+          "message": {
+            "role": "assistant",
+            "content": "抱歉，我还没有学会如何回答这个问题，有什么别的我可以帮助你吗？",
+            "steps": [
+              {
+                "role": "assistant",
+                "content": "抱歉，我还没有学会如何回答这个问题，有什么别的我可以帮助你吗？",
+                "usage": {
+                  "prompt_tokens": 0,
+                  "completion_tokens": 0,
+                  "total_tokens": 0
+                },
+                "time_cost": 0
+              }
+            ]
+          }
+        }
+      ],
+      "assistant_id": "NpqYVYeG7vTS",
+      "usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    "image_path": "G:\\git仓库\\Puppeteer-grabber\\downloads/downloaded_images/8.13/3/3b4a05695d9e5c7b50bc4c803fd88e24_daa34502edcf32ea977715209b31f5f3.jpeg",
+    "processed_image_path": null,
+    "instruction": "移除舞台上穿黑白条纹衣服的人物，请保持图片的原有尺寸1080X1080，保持其他元素不变，确保编辑后的图片与原图在构图和风格上保持一致。",
+    "original_size": "1080X1080",
+    "processed_at": "2025-08-13T01:13:41.102128"
+  },
+  "processed_at": "2025-08-13T01:13:41.102128",
+  "status": "completed",
+  "processed_image_path": null
+}

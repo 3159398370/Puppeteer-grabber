@@ -1,0 +1,19 @@
+{
+  "task_id": "demo_selenium_001",
+  "timestamp": "2025-08-13T22:24:04.050418",
+  "image": {
+    "local_path": "data/images/demo_image.jpg",
+    "original_size": "1920X1080",
+    "format": "JPEG"
+  },
+  "annotation": {
+    "user_instruction": "请帮我优化这张图片的色彩和对比度，让它看起来更加鲜艳和清晰",
+    "processing_type": "image_enhancement",
+    "expected_output": "enhanced_image"
+  },
+  "metadata": {
+    "source": "selenium_demo",
+    "automation_type": "yuanbao_selenium",
+    "created_at": "2025-08-13 22:24:04"
+  }
+}

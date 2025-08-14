@@ -5,6 +5,7 @@
 """
 
 import os
+import sys
 import time
 import json 
 from selenium import webdriver
@@ -32,19 +33,41 @@ def search_task_by_number():
     options.add_argument('--disable-web-security')
     options.add_argument('--log-level=3')  # 只显示致命错误
     options.add_argument('--silent')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-software-rasterizer')
+    options.add_argument('--disable-background-timer-throttling')
+    options.add_argument('--disable-backgrounding-occluded-windows')
+    options.add_argument('--disable-renderer-backgrounding')
+    options.add_argument('--disable-features=TranslateUI')
+    options.add_argument('--disable-ipc-flooding-protection')
     options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
     options.add_experimental_option('useAutomationExtension', False)
 
-    # 添加用户数据目录以保持会话
-    user_data_dir = os.path.join(os.getcwd(), 'chrome_user_data')
-    options.add_argument(f'--user-data-dir={user_data_dir}')
-    options.add_argument('--profile-directory=Default')
-
-    # 使用本地chromedriver.exe
-    # 获取脚本所在目录的上级目录（项目根目录）
+    # 使用固定的用户数据目录以保持登录状态
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
-    chromedriver_path = os.path.join(project_root, 'chromedriver.exe')
+    user_data_dir = os.path.join(project_root, 'chrome_user_data')
+    
+    # 确保用户数据目录存在
+    os.makedirs(user_data_dir, exist_ok=True)
+    
+    options.add_argument(f'--user-data-dir={user_data_dir}')
+    options.add_argument('--profile-directory=Default')
+    
+    print(f"📁 使用用户数据目录: {user_data_dir}")
+    print("💡 此配置将保持登录状态，避免重复登录")
+
+    # 使用本地chromedriver.exe
+    # 适配PyInstaller打包环境
+    if getattr(sys, 'frozen', False):
+        # 如果是打包后的exe文件
+        application_path = sys._MEIPASS
+        chromedriver_path = os.path.join(application_path, 'chromedriver.exe')
+    else:
+        # 如果是开发环境
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(script_dir)
+        chromedriver_path = os.path.join(project_root, 'chromedriver.exe')
     service = Service(chromedriver_path)
     service.log_path = os.devnull  # 禁用日志
 
@@ -148,8 +171,15 @@ def search_task_by_number():
             lambda d: d.execute_script("return document.readyState") == "complete"
         )
         print("✅ 主页面加载完成")
-    except TimeoutException:
-        print("主页面加载超时，但继续")
+    except (TimeoutException, WebDriverException) as e:
+        print(f"主页面加载超时或浏览器连接断开: {e}")
+        print("尝试重新启动浏览器...")
+        if driver:
+            try:
+                driver.quit()
+            except:
+                pass
+        return
 
     # 点击我的任务
     print("\n=== 导航到我的任务页面 ===")
@@ -456,6 +486,19 @@ def search_task_by_number():
         try:
             print(f"查找详情按钮: {details_button_xpath}")
 
+            # 等待页面加载完成，确保没有遮罩层
+            print("等待页面完全加载...")
+            time.sleep(3)
+            
+            # 等待可能的加载遮罩消失
+            try:
+                WebDriverWait(driver, 10).until(
+                    EC.invisibility_of_element_located((By.CLASS_NAME, "ivu-spin-fix"))
+                )
+                print("✅ 加载遮罩已消失")
+            except:
+                print("⚠ 未检测到加载遮罩或已消失")
+
             # 等待详情按钮可见并可点击
             details_button = WebDriverWait(driver, 15).until(
                 EC.element_to_be_clickable((By.XPATH, details_button_xpath)))
@@ -464,15 +507,42 @@ def search_task_by_number():
 
             # 滚动到按钮位置
             driver.execute_script("arguments[0].scrollIntoView(true);", details_button)
-            time.sleep(1)
+            time.sleep(2)
 
             # 获取按钮文本
             button_text = details_button.text
             print(f"按钮文本: {button_text}")
 
-            # 点击详情按钮
-            details_button.click()
-            print("✅ 成功点击详情按钮")
+            # 多种点击策略
+            click_success = False
+            
+            # 方法1: 直接点击
+            try:
+                details_button.click()
+                print("✅ 成功点击详情按钮（直接点击）")
+                click_success = True
+            except Exception as e:
+                print(f"直接点击失败: {e}")
+                
+                # 方法2: JavaScript点击
+                try:
+                    driver.execute_script("arguments[0].click();", details_button)
+                    print("✅ 成功点击详情按钮（JavaScript点击）")
+                    click_success = True
+                except Exception as js_e:
+                    print(f"JavaScript点击失败: {js_e}")
+                    
+                    # 方法3: ActionChains点击
+                    try:
+                        ActionChains(driver).move_to_element(details_button).pause(1).click().perform()
+                        print("✅ 成功点击详情按钮（ActionChains点击）")
+                        click_success = True
+                    except Exception as ac_e:
+                        print(f"ActionChains点击失败: {ac_e}")
+            
+            if not click_success:
+                print("❌ 所有点击方法都失败了")
+                return
 
             # 等待详情页面加载
             time.sleep(3)
@@ -492,16 +562,20 @@ def search_task_by_number():
             # 询问是否启动浮动控制面板
             print("\n🎯 是否启动浮动控制面板？(y/n)")
             print("浮动面板提供以下快捷键功能：")
-            print("  ← 左键: 跳过")
-            print("  → 右键: 选中")
-            print("  ↑ 上键: 提取")
-            print("  ↓ 下键: 上传")
+            print("  ← 左键: 调用API")
+            print("  → 右键: 跳过")
+            print("  ↑ 上键: 上传")
+            print("  ↓ 下键: 提取")
             print("  空格键: 提交")
             
             panel_choice = input("启动浮动面板? (y/n): ").strip().lower()
             if panel_choice in ['y', 'yes', '是']:
                 try:
-                    from floating_control_panel import create_floating_panel
+                    # 尝试不同的导入路径以适应打包环境
+                    try:
+                        from floating_control_panel import create_floating_panel
+                    except ImportError:
+                        from scripts.floating_control_panel import create_floating_panel
                     print("\n🚀 启动浮动控制面板...")
                     print("⚠️  面板将在新窗口中打开，请保持浏览器窗口活动状态")
                     create_floating_panel(driver)

@@ -1,0 +1,263 @@
+{
+  "created_at": "2025-08-12 23:23:53",
+  "total_tasks": 16,
+  "tasks": [
+    {
+      "timestamp": "2025-08-12 23:23:53",
+      "task_id": "25",
+      "image": {
+        "filename": "0d7877d26f64b65a7f63475e36cdb010_af0abdfdcbf19019ba602200ef4d7e45.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/0d7877d26f64b65a7f63475e36cdb010_af0abdfdcbf19019ba602200ef4d7e45.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755012229%3B1755014389%26q-key-time%3D1755012229%3B1755014389%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D05e9fa8a444d2079327ab009e4215687ababb357",
+        "local_path": "downloads/downloaded_images/8.12/25/0d7877d26f64b65a7f63475e36cdb010_af0abdfdcbf19019ba602200ef4d7e45.jpeg",
+        "original_size": "1920X1080"
+      },
+      "annotation": {
+        "instruction": "把舞台上穿黑白条纹衣服的两位女士删掉",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-13 01:02:36",
+      "task_id": "1",
+      "image": {
+        "filename": "e3b9242f55808f01cb4cc654d43a2b71_c4dbd784c76255c48128efcf0fa683cd.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/e3b9242f55808f01cb4cc654d43a2b71_c4dbd784c76255c48128efcf0fa683cd.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755018150%3B1755020310%26q-key-time%3D1755018150%3B1755020310%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3Dc07015df37f1c83ac4a434fece7e28e324b1c55f",
+        "local_path": "downloads/downloaded_images/8.13/1/e3b9242f55808f01cb4cc654d43a2b71_c4dbd784c76255c48128efcf0fa683cd.jpeg",
+        "original_size": "1440X1440"
+      },
+      "annotation": {
+        "instruction": "把所有穿着黑色印花T恤的男性人物都删除掉",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-13 01:02:40",
+      "task_id": "2",
+      "image": {
+        "filename": "e3b9242f55808f01cb4cc654d43a2b71_c4dbd784c76255c48128efcf0fa683cd.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/e3b9242f55808f01cb4cc654d43a2b71_c4dbd784c76255c48128efcf0fa683cd.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755018150%3B1755020310%26q-key-time%3D1755018150%3B1755020310%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3Dc07015df37f1c83ac4a434fece7e28e324b1c55f",
+        "local_path": "downloads/downloaded_images/8.13/2/e3b9242f55808f01cb4cc654d43a2b71_c4dbd784c76255c48128efcf0fa683cd.jpeg",
+        "original_size": "1440X1440"
+      },
+      "annotation": {
+        "instruction": "把所有穿着黑色印花T恤的男性人物都删除掉",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-13 01:10:14",
+      "task_id": "3",
+      "image": {
+        "filename": "3b4a05695d9e5c7b50bc4c803fd88e24_daa34502edcf32ea977715209b31f5f3.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/3b4a05695d9e5c7b50bc4c803fd88e24_daa34502edcf32ea977715209b31f5f3.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755018613%3B1755020773%26q-key-time%3D1755018613%3B1755020773%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3De47f7b5e8716bccf5007fd74da8c5801de69bdb2",
+        "local_path": "downloads/downloaded_images/8.13/3/3b4a05695d9e5c7b50bc4c803fd88e24_daa34502edcf32ea977715209b31f5f3.jpeg",
+        "original_size": "1080X1080"
+      },
+      "annotation": {
+        "instruction": "把前景中的乐手和背景中的鼓手都删掉",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-13 01:14:12",
+      "task_id": "4",
+      "image": {
+        "filename": "a63f22f8b1d48c331415f01dd75cb088_6888622869c0a2fcbb3455842b30febb.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/a63f22f8b1d48c331415f01dd75cb088_6888622869c0a2fcbb3455842b30febb.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755018842%3B1755021002%26q-key-time%3D1755018842%3B1755021002%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3Dfb3704c78d407d3d310e4b419006826af17a2c0d",
+        "local_path": "downloads/downloaded_images/8.13/4/a63f22f8b1d48c331415f01dd75cb088_6888622869c0a2fcbb3455842b30febb.jpeg",
+        "original_size": "1170X1170"
+      },
+      "annotation": {
+        "instruction": "把图片中除正在看相机的女孩外的其他两位女孩删除掉",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-13 15:19:37",
+      "task_id": "5",
+      "image": {
+        "filename": "fa659ff33be2d8d41829911d8c01f4dc_f39b3b0cfa9ea187b47c49c598f868e0.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/fa659ff33be2d8d41829911d8c01f4dc_f39b3b0cfa9ea187b47c49c598f868e0.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755069576%3B1755071736%26q-key-time%3D1755069576%3B1755071736%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D7fefbe8971b0ebd5b0de0616c4758349e4bbd455",
+        "local_path": "downloads/downloaded_images/8.13/5/fa659ff33be2d8d41829911d8c01f4dc_f39b3b0cfa9ea187b47c49c598f868e0.jpeg",
+        "original_size": "1080X1080"
+      },
+      "annotation": {
+        "instruction": "把图中的两个人删除掉",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-13 22:17:18",
+      "task_id": "demo_001",
+      "image": {
+        "filename": "demo_image.jpg",
+        "url": "https://example.com/demo_image.jpg",
+        "local_path": "downloads/downloaded_images/demo/demo_image.jpg",
+        "original_size": "1920x1080"
+      },
+      "annotation": {
+        "instruction": "移除舞台上穿黑白条纹衣服的人物",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-13 23:12:23",
+      "task_id": "1",
+      "image": {
+        "filename": "ccc92f7ec22ade4623755d97df6f2177_ca93a2747df994b0084816c534dc5cb2.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/ccc92f7ec22ade4623755d97df6f2177_ca93a2747df994b0084816c534dc5cb2.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755097943%3B1755100103%26q-key-time%3D1755097943%3B1755100103%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3Dbc7ac0954d58268ac31e3615ee32812b48910c38",
+        "local_path": "downloads/downloaded_images/8.13/1/ccc92f7ec22ade4623755d97df6f2177_ca93a2747df994b0084816c534dc5cb2.jpeg",
+        "original_size": "1440X1440"
+      },
+      "annotation": {
+        "instruction": "删除图中坐在前景中的所有女性",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-13 23:24:55",
+      "task_id": "2",
+      "image": {
+        "filename": "900d59f3aa175e28e6b786787f373225_10f292c61538f642b23d765c1a052f19.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/900d59f3aa175e28e6b786787f373225_10f292c61538f642b23d765c1a052f19.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755098661%3B1755100821%26q-key-time%3D1755098661%3B1755100821%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D03a7864df1bdbd8fd12713de131a5327cbd95c18",
+        "local_path": "downloads/downloaded_images/8.13/2/900d59f3aa175e28e6b786787f373225_10f292c61538f642b23d765c1a052f19.jpeg",
+        "original_size": "1440X1440"
+      },
+      "annotation": {
+        "instruction": "把最前面的四位女孩删掉。",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-14 00:00:31",
+      "task_id": "1",
+      "image": {
+        "filename": "17192cce740bbb7ab903738d15a6ba6c_6ca9735b28ffb4b2a772d956cbfe6e6c.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/17192cce740bbb7ab903738d15a6ba6c_6ca9735b28ffb4b2a772d956cbfe6e6c.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755100829%3B1755102989%26q-key-time%3D1755100829%3B1755102989%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D8984ce961a630a088086c8b8ca8988932713bdb2",
+        "local_path": "downloads/downloaded_images/8.14/1/17192cce740bbb7ab903738d15a6ba6c_6ca9735b28ffb4b2a772d956cbfe6e6c.jpeg",
+        "original_size": "1440X1440"
+      },
+      "annotation": {
+        "instruction": "把图中除主要人物以外的所有人都删除掉",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-14 00:10:14",
+      "task_id": "2",
+      "image": {
+        "filename": "17192cce740bbb7ab903738d15a6ba6c_6ca9735b28ffb4b2a772d956cbfe6e6c.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/17192cce740bbb7ab903738d15a6ba6c_6ca9735b28ffb4b2a772d956cbfe6e6c.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755101398%3B1755103558%26q-key-time%3D1755101398%3B1755103558%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D0fc7672917160d0ed1b0a8728f89171f22eea70e",
+        "local_path": "downloads/downloaded_images/8.14/2/17192cce740bbb7ab903738d15a6ba6c_6ca9735b28ffb4b2a772d956cbfe6e6c.jpeg",
+        "original_size": "1440X1440"
+      },
+      "annotation": {
+        "instruction": "把图中除主要人物以外的所有人都删除掉",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-14 21:04:29",
+      "task_id": "3",
+      "image": {
+        "filename": "24026ac642640f3843dd2ef5cd3c7a7f_54de150e1a865f2446518724040608f4.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/24026ac642640f3843dd2ef5cd3c7a7f_54de150e1a865f2446518724040608f4.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755176657%3B1755178817%26q-key-time%3D1755176657%3B1755178817%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D7b130da208046704486c21e11baebd6008ef00ec",
+        "local_path": "downloads/downloaded_images/8.14/3/24026ac642640f3843dd2ef5cd3c7a7f_54de150e1a865f2446518724040608f4.jpeg",
+        "original_size": "1800X1440"
+      },
+      "annotation": {
+        "instruction": "删除图中除了这位毕业生之外的所有围观人群。",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-14 21:13:45",
+      "task_id": "4",
+      "image": {
+        "filename": "ac822c6d576fb0031aab6dec7caae038_7bd7b2730dd8136a6aff8a5f17ea01f8.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/ac822c6d576fb0031aab6dec7caae038_7bd7b2730dd8136a6aff8a5f17ea01f8.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755177217%3B1755179377%26q-key-time%3D1755177217%3B1755179377%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D5e00657d590da3840f3e410f69aa896f8761c21c",
+        "local_path": "downloads/downloaded_images/8.14/4/ac822c6d576fb0031aab6dec7caae038_7bd7b2730dd8136a6aff8a5f17ea01f8.jpeg",
+        "original_size": "1350X1080"
+      },
+      "annotation": {
+        "instruction": "把背景中所有的人都删除掉",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-14 21:19:25",
+      "task_id": "5",
+      "image": {
+        "filename": "3355ad3315c3665e2e36b22a294abf35_4c658b640fb00bd131901c7257ad64f0.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/3355ad3315c3665e2e36b22a294abf35_4c658b640fb00bd131901c7257ad64f0.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755177558%3B1755179718%26q-key-time%3D1755177558%3B1755179718%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D1fe7a214bb809e7285509a694497e4a74871ec67",
+        "local_path": "downloads/downloaded_images/8.14/5/3355ad3315c3665e2e36b22a294abf35_4c658b640fb00bd131901c7257ad64f0.jpeg",
+        "original_size": "1440X1440"
+      },
+      "annotation": {
+        "instruction": "把除了前景中的女孩之外的所有人都删除掉。",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-14 21:29:59",
+      "task_id": "6",
+      "image": {
+        "filename": "b2ce771c2c80cab9ca21e14373ca7775_850480d1ab92b3142b5c7b82b409d9ac.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/b2ce771c2c80cab9ca21e14373ca7775_850480d1ab92b3142b5c7b82b409d9ac.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755178192%3B1755180352%26q-key-time%3D1755178192%3B1755180352%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3Db7da257e9df541c6ae65d21be1fb9292a943c5d0",
+        "local_path": "downloads/downloaded_images/8.14/6/b2ce771c2c80cab9ca21e14373ca7775_850480d1ab92b3142b5c7b82b409d9ac.jpeg",
+        "original_size": "1778X1440"
+      },
+      "annotation": {
+        "instruction": "把图中的一对情侣删除掉",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    },
+    {
+      "timestamp": "2025-08-14 21:35:42",
+      "task_id": "7",
+      "image": {
+        "filename": "cc1e04b7b69c51f3fdd5e88411769a40_92166eed50e81d694caefeae1a25372f.jpeg",
+        "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/cc1e04b7b69c51f3fdd5e88411769a40_92166eed50e81d694caefeae1a25372f.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755178533%3B1755180693%26q-key-time%3D1755178533%3B1755180693%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D770970f9495f193430d5a8657da24efbd74b6696",
+        "local_path": "downloads/downloaded_images/8.14/7/cc1e04b7b69c51f3fdd5e88411769a40_92166eed50e81d694caefeae1a25372f.jpeg",
+        "original_size": "1800X1440"
+      },
+      "annotation": {
+        "instruction": "把图中所有男性都删除掉",
+        "type": "image_editing"
+      },
+      "status": "extracted",
+      "api_ready": true
+    }
+  ],
+  "last_updated": "2025-08-14 21:35:42"
+}

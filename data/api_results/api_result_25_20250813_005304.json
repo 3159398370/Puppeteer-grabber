@@ -1,0 +1,93 @@
+{
+  "task_data": {
+    "timestamp": "2025-08-12 23:23:53",
+    "task_id": "25",
+    "image": {
+      "filename": "0d7877d26f64b65a7f63475e36cdb010_af0abdfdcbf19019ba602200ef4d7e45.jpeg",
+      "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/0d7877d26f64b65a7f63475e36cdb010_af0abdfdcbf19019ba602200ef4d7e45.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755012229%3B1755014389%26q-key-time%3D1755012229%3B1755014389%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D05e9fa8a444d2079327ab009e4215687ababb357",
+      "local_path": "downloads/downloaded_images/8.12/25/0d7877d26f64b65a7f63475e36cdb010_af0abdfdcbf19019ba602200ef4d7e45.jpeg",
+      "original_size": "1920X1080"
+    },
+    "annotation": {
+      "instruction": "把舞台上穿黑白条纹衣服的两位女士删掉",
+      "type": "image_editing"
+    },
+    "status": "extracted",
+    "api_ready": true
+  },
+  "api_result": {
+    "api_response": {
+      "id": "32171917419d35b9715f061cb395cedf",
+      "created": 1755017577,
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "您好，为了帮助您移除图片中穿黑白条纹衣服的人物，我需要您提供以下信息：\n1. 需要被编辑的图片的URL地址（必填）\n2. 黑白条纹衣服的mask图片的URL地址（必填）\n请确保这些图片的格式为jpg，并且您有权限使用这些图片。如果您不确定如何获取这些URL，请告诉我，我可以进一步指导您。",
+            "steps": [
+              {
+                "role": "assistant",
+                "content": "",
+                "usage": {
+                  "prompt_tokens": 236,
+                  "completion_tokens": 84,
+                  "total_tokens": 320
+                },
+                "time_cost": 2900,
+                "tool_calls": [
+                  {
+                    "id": "call_d2dn2r42c3maubeee3j0",
+                    "type": "function",
+                    "function": {
+                      "name": "6898b6391ce43d0aed4c2c1e",
+                      "desc": "图片处理",
+                      "type": "tool",
+                      "arguments": "{\"image_url\":\"用户需要提供的图片url地址\",\"mask_url\":\"用户需要提供的黑白条纹衣服的mask图片url地址\"}"
+                    }
+                  }
+                ]
+              },
+              {
+                "role": "tool",
+                "content": "type:business, code:10002, msg:download image err, caused by Get \"%E7%94%A8%E6%88%B7%E9%9C%80%E8%A6%81%E6%8F%90%E4%BE%9B%E7%9A%84%E5%9B%BE%E7%89%87url%E5%9C%B0%E5%9D%80\": unsupported protocol scheme \"\"",
+                "usage": {
+                  "prompt_tokens": 0,
+                  "completion_tokens": 0,
+                  "total_tokens": 0
+                },
+                "time_cost": 288,
+                "tool_call_id": "call_d2dn2r42c3maubeee3j0",
+                "tool_call_error": true
+              },
+              {
+                "role": "assistant",
+                "content": "您好，为了帮助您移除图片中穿黑白条纹衣服的人物，我需要您提供以下信息：\n1. 需要被编辑的图片的URL地址（必填）\n2. 黑白条纹衣服的mask图片的URL地址（必填）\n请确保这些图片的格式为jpg，并且您有权限使用这些图片。如果您不确定如何获取这些URL，请告诉我，我可以进一步指导您。",
+                "usage": {
+                  "prompt_tokens": 454,
+                  "completion_tokens": 81,
+                  "total_tokens": 535
+                },
+                "time_cost": 3712
+              }
+            ]
+          }
+        }
+      ],
+      "assistant_id": "NpqYVYeG7vTS",
+      "usage": {
+        "prompt_tokens": 690,
+        "completion_tokens": 165,
+        "total_tokens": 855
+      }
+    },
+    "image_path": "G:\\git仓库\\Puppeteer-grabber\\downloads/downloaded_images/8.12/25/0d7877d26f64b65a7f63475e36cdb010_af0abdfdcbf19019ba602200ef4d7e45.jpeg",
+    "processed_image_path": null,
+    "instruction": "移除舞台上穿黑白条纹衣服的人物，请保持图片的原有尺寸1920X1080，保持其他元素不变，确保编辑后的图片与原图在构图和风格上保持一致。",
+    "original_size": "1920X1080",
+    "processed_at": "2025-08-13T00:53:04.212526"
+  },
+  "processed_at": "2025-08-13T00:53:04.213526",
+  "status": "completed",
+  "processed_image_path": null
+}

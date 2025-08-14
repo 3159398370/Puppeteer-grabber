@@ -1,0 +1,59 @@
+{
+  "task_data": {
+    "timestamp": "2025-08-13 15:19:37",
+    "task_id": "5",
+    "image": {
+      "filename": "fa659ff33be2d8d41829911d8c01f4dc_f39b3b0cfa9ea187b47c49c598f868e0.jpeg",
+      "url": "https://aidata-1258344706.cos.ap-guangzhou.myqcloud.com/target/dataset/DS1955187729230004224/1955187729313890304/fa659ff33be2d8d41829911d8c01f4dc_f39b3b0cfa9ea187b47c49c598f868e0.jpeg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDENNCqGUWs8C4h7KK5dr8MRL3XosjNn38%26q-sign-time%3D1755069576%3B1755071736%26q-key-time%3D1755069576%3B1755071736%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D7fefbe8971b0ebd5b0de0616c4758349e4bbd455",
+      "local_path": "downloads/downloaded_images/8.13/5/fa659ff33be2d8d41829911d8c01f4dc_f39b3b0cfa9ea187b47c49c598f868e0.jpeg",
+      "original_size": "1080X1080"
+    },
+    "annotation": {
+      "instruction": "把图中的两个人删除掉",
+      "type": "image_editing"
+    },
+    "status": "extracted",
+    "api_ready": true
+  },
+  "api_result": {
+    "api_response": {
+      "id": "666ac36909e41fe83ab7b25cf3c9bb70",
+      "created": 1755069725,
+      "choices": [
+        {
+          "finish_reason": "sensitive",
+          "message": {
+            "role": "assistant",
+            "content": "抱歉，我还没有学会如何回答这个问题，有什么别的我可以帮助你吗？",
+            "steps": [
+              {
+                "role": "assistant",
+                "content": "抱歉，我还没有学会如何回答这个问题，有什么别的我可以帮助你吗？",
+                "usage": {
+                  "prompt_tokens": 0,
+                  "completion_tokens": 0,
+                  "total_tokens": 0
+                },
+                "time_cost": 0
+              }
+            ]
+          }
+        }
+      ],
+      "assistant_id": "NpqYVYeG7vTS",
+      "usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    "image_path": "G:\\git仓库\\Puppeteer-grabber\\downloads/downloaded_images/8.13/5/fa659ff33be2d8d41829911d8c01f4dc_f39b3b0cfa9ea187b47c49c598f868e0.jpeg",
+    "processed_image_path": null,
+    "instruction": "移除舞台上穿黑白条纹衣服的人物，请保持图片的原有尺寸1080X1080，保持其他元素不变，确保编辑后的图片与原图在构图和风格上保持一致。",
+    "original_size": "1080X1080",
+    "processed_at": "2025-08-13T15:22:05.495419"
+  },
+  "processed_at": "2025-08-13T15:22:05.495419",
+  "status": "completed",
+  "processed_image_path": null
+}
