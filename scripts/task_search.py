@@ -60,6 +60,15 @@ def ask_for_floating_panel(driver):
 
 def search_task_by_number():
     """在企鹅标注平台我的任务页面输入任务编号并查询"""
+    # 显示项目信息
+    print("="*60)
+    print("🚀 项目发布者：Valrandy·Joseph")
+    print("🌐 我的网站：https://learningtree.fun/")
+    print("⚠️  现在本内容还在测试中，可能会有很多bug都没测试出来")
+    print("📧 如有问题，请联系Valrandy·Joseph")
+    print("="*60)
+    print()
+    
     driver = None
     
     # 配置Chrome选项 - 静默模式
@@ -95,6 +104,7 @@ def search_task_by_number():
     
     print(f"📁 使用用户数据目录: {user_data_dir}")
     print("💡 此配置将保持登录状态，避免重复登录")
+    print("🚀 项目发布者：Valrandy·Joseph | 网站：https://learningtree.fun/")
 
     # 使用本地chromedriver.exe
     # 适配PyInstaller打包环境
